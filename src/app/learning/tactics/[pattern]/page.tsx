@@ -10,6 +10,7 @@ import { Tutor } from "@/components/Tutor";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 import { SupportedLanguage } from "@/lib/i18n/translations";
 import { Personality, PERSONALITIES } from "@/lib/personalities";
+import { getStoredApiKey } from "@/lib/apiKeyHelper";
 import {
     generateTacticExercise,
     TacticalPatternType,
@@ -74,7 +75,7 @@ export default function TacticalPracticePage() {
         if (storedLang) setLanguage(storedLang as SupportedLanguage);
 
         // Load API key from the correct localStorage key
-        const storedApiKey = localStorage.getItem("gemini_api_key");
+        const storedApiKey = getStoredApiKey();
         if (storedApiKey) setApiKey(storedApiKey);
 
         const storedPersonalityId = localStorage.getItem("chess_tutor_personality");

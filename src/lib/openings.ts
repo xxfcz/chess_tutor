@@ -6,7 +6,7 @@ import ecoE from '../../public/openings/ecoE.json';
 import moveIndex from '../../public/openings/moveIndex.json';
 
 export interface OpeningMetadata {
-    src: string;
+    src?: string;
     eco: string;
     moves: string;
     name: string;

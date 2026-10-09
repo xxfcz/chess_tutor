@@ -15,7 +15,7 @@ test.describe('Opening Training - Interactive Scenarios', () => {
   test.beforeEach(async ({ page }) => {
     // Set a mock API key in localStorage BEFORE any page loads
     await page.addInitScript(() => {
-      localStorage.setItem('gemini_api_key', 'mock-api-key-for-testing');
+      localStorage.setItem('llm_api_key', 'mock-api-key-for-testing');
     });
 
     await page.goto('/learning/openings');
@@ -187,7 +187,7 @@ test.describe('Opening Training - Interactive Scenarios', () => {
 test.describe('Opening Training - Board Interaction Debugging', () => {
   test.skip('debug: inspect chess board structure', async ({ page }) => {
     await page.addInitScript(() => {
-      localStorage.setItem('gemini_api_key', 'mock-api-key-for-testing');
+      localStorage.setItem('llm_api_key', 'mock-api-key-for-testing');
     });
 
     await page.goto('/learning/openings/C00');

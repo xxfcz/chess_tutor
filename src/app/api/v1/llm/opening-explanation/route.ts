@@ -1,19 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import {
   OPENING_TUTOR_SYSTEM_PROMPT,
   OPENING_TUTOR_TEMPERATURE,
   OPENING_TUTOR_MAX_TOKENS,
   generateFallbackExplanation,
 } from '@/lib/server/openingTutorPrompt';
-import { DEFAULT_GEMINI_MODEL } from '@/lib/gemini';
+import { generateWithSystemInstruction } from '@/lib/llm';
 
 export const runtime = 'nodejs';
 export const maxDuration = 10; // 10 second timeout
 
 /**
  * Opening Explanation API Endpoint
- * Generates educational explanations for chess moves using LLM
+ * Generates educational explanations for chess moves using an LLM.
+ *
+ * The LLM provider is fully configurable via environment variables
+ * (NEXT_PUBLIC_LLM_BASE_URL / LLM_API_KEY / NEXT_PUBLIC_LLM_MODEL, falling back
+ * to the legacy NEXT_PUBLIC_GEMINI_* values). It speaks the OpenAI Chat
+ * Completions protocol, so any third-party compatible endpoint works.
  */
 export async function POST(request: NextRequest) {
   try {
@@ -34,10 +38,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check for API key
-    const apiKey = process.env.GEMINI_API_KEY;
+    // Check for API key (server-side env; falls back to legacy GEMINI_API_KEY)
+    const apiKey =
+      process.env.LLM_API_KEY ||
+      process.env.NEXT_PUBLIC_LLM_API_KEY ||
+      process.env.GEMINI_API_KEY ||
+      process.env.NEXT_PUBLIC_GEMINI_API_KEY;
     if (!apiKey) {
-      console.warn('GEMINI_API_KEY not configured, using fallback explanation');
+      console.warn('LLM API key not configured, using fallback explanation');
       const fallback = generateFallbackExplanation(
         category,
         moveSan,
@@ -51,21 +59,14 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Initialize Gemini API
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({
-      model: DEFAULT_GEMINI_MODEL,
-      generationConfig: {
-        temperature: OPENING_TUTOR_TEMPERATURE,
-        maxOutputTokens: OPENING_TUTOR_MAX_TOKENS,
-      },
+    // Generate explanation via the configurable, OpenAI-compatible provider.
+    const explanation = await generateWithSystemInstruction({
+      apiKey,
       systemInstruction: OPENING_TUTOR_SYSTEM_PROMPT,
+      prompt,
+      maxTokens: OPENING_TUTOR_MAX_TOKENS,
+      temperature: OPENING_TUTOR_TEMPERATURE,
     });
-
-    // Generate explanation
-    const result = await model.generateContent(prompt);
-    const response = result.response;
-    const explanation = response.text();
 
     if (!explanation || explanation.trim().length === 0) {
       // Empty response - use fallback

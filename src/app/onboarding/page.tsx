@@ -14,17 +14,23 @@ export default function OnboardingPage() {
     const [step, setStep] = useState(0);
     const [language, setLanguage] = useState<SupportedLanguage>("en");
     const [apiKey, setApiKey] = useState("");
+    const [baseUrl, setBaseUrl] = useState("");
+    const [model, setModel] = useState("");
     const [mounted, setMounted] = useState(false);
     const [error, setError] = useState("");
     const [consentGiven, setConsentGiven] = useState(false);
 
     useEffect(() => {
-        const storedKey = localStorage.getItem("gemini_api_key");
+        const storedKey = localStorage.getItem("llm_api_key") || localStorage.getItem("gemini_api_key");
+        const storedBase = localStorage.getItem("llm_base_url");
+        const storedModel = localStorage.getItem("llm_model");
         const storedLang = localStorage.getItem("chess_tutor_language");
 
         if (storedLang) {
             setLanguage(storedLang as SupportedLanguage);
         }
+        if (storedBase) setBaseUrl(storedBase);
+        if (storedModel) setModel(storedModel);
 
         if (storedKey) {
             router.push("/");
@@ -69,7 +75,10 @@ export default function OnboardingPage() {
             return;
         }
 
-        localStorage.setItem("gemini_api_key", trimmed);
+        localStorage.setItem("llm_api_key", trimmed);
+        if (baseUrl.trim()) localStorage.setItem("llm_base_url", baseUrl.trim());
+        if (model.trim()) localStorage.setItem("llm_model", model.trim());
+        localStorage.removeItem("gemini_api_key");
         localStorage.setItem("chess_tutor_language", language);
         router.push("/");
     };
@@ -192,7 +201,7 @@ export default function OnboardingPage() {
                                         </li>
                                     </ul>
                                     <a
-                                        href="https://aistudio.google.com/app/apikey"
+                                        href="https://platform.openai.com/api-keys"
                                         target="_blank"
                                         rel="noreferrer"
                                         className="inline-flex items-center gap-2 text-blue-600 hover:underline font-semibold"
@@ -202,6 +211,17 @@ export default function OnboardingPage() {
                                 </div>
                                 <div className="bg-gray-50 dark:bg-gray-700/60 rounded-xl p-6 border border-gray-100 dark:border-gray-700 space-y-4">
                                     <label className="block text-sm font-semibold text-gray-800 dark:text-gray-100">
+                                        API Base URL
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={baseUrl}
+                                        onChange={(e) => setBaseUrl(e.target.value)}
+                                        placeholder="https://api.openai.com/v1"
+                                        className="w-full p-3 rounded-lg border dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                    />
+
+                                    <label className="block text-sm font-semibold text-gray-800 dark:text-gray-100 mt-2">
                                         {t.onboarding.api.inputLabel}
                                     </label>
                                     <input
@@ -209,6 +229,17 @@ export default function OnboardingPage() {
                                         value={apiKey}
                                         onChange={(e) => setApiKey(e.target.value)}
                                         placeholder={t.onboarding.api.placeholder}
+                                        className="w-full p-3 rounded-lg border dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                    />
+
+                                    <label className="block text-sm font-semibold text-gray-800 dark:text-gray-100 mt-2">
+                                        Model
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={model}
+                                        onChange={(e) => setModel(e.target.value)}
+                                        placeholder="gpt-4o-mini"
                                         className="w-full p-3 rounded-lg border dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
                                     />
 

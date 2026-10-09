@@ -34,7 +34,7 @@ jest.mock('@/components/StartScreen', () => ({
 
 describe('Home Component', () => {
     beforeEach(() => {
-        localStorage.setItem('gemini_api_key', 'test-key');
+        localStorage.setItem('llm_api_key', 'test-key');
         mockPush.mockClear();
     });
 

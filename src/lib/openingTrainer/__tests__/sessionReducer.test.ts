@@ -91,7 +91,7 @@ describe('Session Lifecycle', () => {
     const newState = sessionReducer(state, {
       type: 'SESSION_INITIALIZED',
       initialEvaluation: 25,
-    });
+    }) as SessionState;
 
     expect(newState.phase).toBe('user_turn'); // C00 = White opening
     expect(newState.initialEvaluation).toBe(25);
@@ -103,7 +103,7 @@ describe('Session Lifecycle', () => {
     const newState = sessionReducer(state, {
       type: 'SESSION_INITIALIZED',
       initialEvaluation: 25,
-    });
+    }) as SessionState;
 
     expect(newState.phase).toBe('opponent_turn'); // D00 = Black opening
   });
@@ -117,7 +117,7 @@ describe('Session Lifecycle', () => {
       phase: 'user_turn',
     };
 
-    const newState = sessionReducer(state, { type: 'RESET_SESSION' });
+    const newState = sessionReducer(state, { type: 'RESET_SESSION' }) as SessionState;
 
     // RESET_SESSION now returns null to completely clear the session
     // The UI context will handle re-initialization if needed
@@ -137,7 +137,7 @@ describe('User Move Actions', () => {
     const newState = sessionReducer(state, {
       type: 'USER_MOVE_STARTED',
       san: 'e4',
-    });
+    }) as SessionState;
 
     expect(newState.phase).toBe('evaluating_user');
   });
@@ -152,7 +152,7 @@ describe('User Move Actions', () => {
       type: 'USER_MOVE_COMPLETED',
       moveEntry,
       wasNavigatedBack: false,
-    });
+    }) as SessionState;
 
     expect(newState.moveHistory).toHaveLength(1);
     expect(newState.moveHistory[0]).toBe(moveEntry);
@@ -170,7 +170,7 @@ describe('User Move Actions', () => {
       type: 'USER_MOVE_COMPLETED',
       moveEntry,
       wasNavigatedBack: false,
-    });
+    }) as SessionState;
 
     expect(newState.phase).toBe('opponent_turn');
     expect(newState.isInTheory).toBe(true);
@@ -187,7 +187,7 @@ describe('User Move Actions', () => {
       type: 'USER_MOVE_COMPLETED',
       moveEntry,
       wasNavigatedBack: false,
-    });
+    }) as SessionState;
 
     expect(newState.phase).toBe('off_book');
     expect(newState.isInTheory).toBe(false);
@@ -214,7 +214,7 @@ describe('User Move Actions', () => {
       type: 'USER_MOVE_COMPLETED',
       moveEntry: newMove,
       wasNavigatedBack: true,
-    });
+    }) as SessionState;
 
     expect(newState.moveHistory).toHaveLength(2); // e4, e6 kept, d4 removed
     expect(newState.moveHistory[1].san).toBe('Nf3');
@@ -241,7 +241,7 @@ describe('User Move Actions', () => {
       type: 'USER_MOVE_COMPLETED',
       moveEntry: correctMove,
       wasNavigatedBack: true,
-    });
+    }) as SessionState;
 
     expect(newState.deviationMoveIndex).toBeNull(); // DEVIATION RESET!
     expect(newState.isInTheory).toBe(true);
@@ -261,7 +261,7 @@ describe('Opponent Move Actions', () => {
     const newState = sessionReducer(state, {
       type: 'OPPONENT_MOVE_QUEUED',
       san: 'e6',
-    });
+    }) as SessionState;
 
     expect(newState.pendingOpponentMove).toBe('e6');
   });
@@ -281,7 +281,7 @@ describe('Opponent Move Actions', () => {
     const newState = sessionReducer(state, {
       type: 'OPPONENT_MOVE_COMPLETED',
       moveEntry: opponentMove,
-    });
+    }) as SessionState;
 
     expect(newState.moveHistory).toHaveLength(2);
     expect(newState.currentMoveIndex).toBe(2);
@@ -308,7 +308,7 @@ describe('Opponent Move Actions', () => {
     const newState = sessionReducer(state, {
       type: 'OPPONENT_MOVE_COMPLETED',
       moveEntry: lastMove,
-    });
+    }) as SessionState;
 
     expect(newState.endOfRepertoireReached).toBe(true);
     expect(newState.phase).toBe('end_of_repertoire');
@@ -335,7 +335,7 @@ describe('Navigation Actions', () => {
     const newState = sessionReducer(state, {
       type: 'NAVIGATE_TO',
       index: 1,
-    });
+    }) as SessionState;
 
     expect(newState.phase).toBe('navigating');
     expect(newState.currentMoveIndex).toBe(1);
@@ -355,7 +355,7 @@ describe('Navigation Actions', () => {
     const newState = sessionReducer(state, {
       type: 'NAVIGATE_TO',
       index: 0,
-    });
+    }) as SessionState;
 
     expect(newState.pendingOpponentMove).toBeNull(); // CANCELLED!
     expect(newState.phase).toBe('navigating');
@@ -375,7 +375,7 @@ describe('Navigation Actions', () => {
 
     const newState = sessionReducer(state, {
       type: 'NAVIGATE_TO_CURRENT',
-    });
+    }) as SessionState;
 
     expect(newState.currentMoveIndex).toBe(2); // Back at end
     expect(newState.currentFEN).toBe('fen2');
@@ -394,7 +394,7 @@ describe('Navigation Actions', () => {
       phase: 'user_turn',
     };
 
-    const newState = sessionReducer(state, { type: 'NAVIGATE_PREVIOUS' });
+    const newState = sessionReducer(state, { type: 'NAVIGATE_PREVIOUS' }) as SessionState;
 
     expect(newState.currentMoveIndex).toBe(1);
     expect(newState.phase).toBe('navigating');
@@ -412,7 +412,7 @@ describe('Navigation Actions', () => {
       phase: 'navigating',
     };
 
-    const newState = sessionReducer(state, { type: 'NAVIGATE_NEXT' });
+    const newState = sessionReducer(state, { type: 'NAVIGATE_NEXT' }) as SessionState;
 
     expect(newState.currentMoveIndex).toBe(2);
   });
@@ -431,13 +431,13 @@ describe('Navigation Actions', () => {
       type: 'USER_MOVE_COMPLETED',
       moveEntry: wrongMove,
       wasNavigatedBack: false,
-    });
+    }) as SessionState;
 
     expect(state.phase).toBe('off_book'); // Deviated
     expect(state.deviationMoveIndex).toBe(0);
 
     // Step 2: User navigates back to start
-    state = sessionReducer(state, { type: 'NAVIGATE_TO', index: 0 });
+    state = sessionReducer(state, { type: 'NAVIGATE_TO', index: 0 }) as SessionState;
     expect(state.phase).toBe('navigating');
 
     // Step 3: User makes CORRECT move (e4)
@@ -446,7 +446,7 @@ describe('Navigation Actions', () => {
       type: 'USER_MOVE_COMPLETED',
       moveEntry: correctMove,
       wasNavigatedBack: true, // This is key!
-    });
+    }) as SessionState;
 
     // ASSERTIONS: The bug is fixed if these all pass
     expect(state.deviationMoveIndex).toBeNull(); // Deviation RESET

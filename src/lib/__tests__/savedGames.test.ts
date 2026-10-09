@@ -7,6 +7,7 @@ const baseGame = {
     selectedPersonality: {
         id: "coach",
         name: "Coach",
+        description: "A chess coach",
         systemPrompt: "Teach chess",
         image: "C",
     },

@@ -23,6 +23,8 @@ type ChatBody = {
   context?: TutorContext;
   history?: ChatHistory;
   modelName?: string;
+  /** Optional custom OpenAI-compatible base URL for this request. */
+  baseUrl?: string;
 };
 
 export async function POST(request: NextRequest) {
@@ -37,6 +39,7 @@ export async function POST(request: NextRequest) {
       context,
       history = [],
       modelName,
+      baseUrl,
     } = body ?? {};
 
     if (!apiKey || typeof apiKey !== "string") {
@@ -60,7 +63,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unknown personality" }, { status: 400 });
     }
 
-    const model = getGenAIModel(apiKey, modelName ?? DEFAULT_GEMINI_MODEL);
+    const model = getGenAIModel(apiKey, modelName ?? DEFAULT_GEMINI_MODEL, baseUrl);
     const systemHistory = buildTutorSystemHistory(personality, language, playerColor);
     const chat = model.startChat({
       history: [...systemHistory, ...normalizeHistory(history)],

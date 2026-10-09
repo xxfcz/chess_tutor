@@ -82,11 +82,11 @@ export function GeminiErrorModal({ error, apiKeyInfo, onClose }: GeminiErrorModa
                   {apiKeyInfo.source === 'localStorage' && (
                     <li>Change your API key to a different one with available quota</li>
                   )}
-                  <li>Upgrade to a paid Gemini API plan for higher quotas</li>
+                  <li>Upgrade to a paid plan for higher quotas</li>
                   <li>Wait until tomorrow for your free tier quota to reset</li>
                   <li>Use the chess tutor less frequently throughout the day</li>
                   {apiKeyInfo.source === 'env' && (
-                    <li>Update the NEXT_PUBLIC_GEMINI_API_KEY environment variable</li>
+                    <li>Update the NEXT_PUBLIC_LLM_API_KEY / LLM_API_KEY environment variable</li>
                   )}
                 </ul>
               </div>
@@ -103,22 +103,22 @@ export function GeminiErrorModal({ error, apiKeyInfo, onClose }: GeminiErrorModa
               )}
 
               <a
-                href="https://ai.google.dev/pricing"
+                href="https://platform.openai.com/docs/guides/text-generation"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
               >
-                View Gemini API Pricing
+                OpenAI-compatible API docs
                 <ExternalLink size={16} />
               </a>
 
               <a
-                href="https://ai.dev/usage"
+                href="https://docs.openai.com/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium"
               >
-                Check Your API Usage
+                Check Your Provider's Usage
                 <ExternalLink size={16} />
               </a>
             </div>

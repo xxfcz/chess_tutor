@@ -417,14 +417,15 @@ Generates AI tutor responses with enforced personality and chess context.
 ```
 
 **Parameters:**
-- `apiKey` (required): Your Google Gemini API key
+- `apiKey` (required): Your LLM provider API key (any OpenAI-compatible provider)
 - `personalityId` (required): ID of the tutor personality (see `/api/v1/personalities`)
 - `language` (required): Language code (`en`, `de`, `fr`, `it`, `pl`)
 - `playerColor` (required): Player's color (`white` or `black`)
 - `message` (required): User's message/question
 - `context` (optional): Chess position context (FEN, evaluation, openings, tactics)
 - `history` (optional): Previous conversation history
-- `modelName` (optional): Gemini model name (default: `gemini-2.5-flash`)
+- `modelName` (optional): Model name (default: `gpt-4o-mini`)
+- `baseUrl` (optional): OpenAI-compatible base URL for this request
 
 **Notes:**
 - The API key is provided by the client (bring your own key)
@@ -494,7 +495,12 @@ You can configure the application using environment variables in your `.env` fil
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `NEXT_PUBLIC_GEMINI_API_KEY` | Google Gemini API Key for AI features | (Required for AI) |
+| `NEXT_PUBLIC_LLM_BASE_URL` | OpenAI-compatible API base URL for AI features | `https://api.openai.com/v1` |
+| `NEXT_PUBLIC_LLM_API_KEY` | API key for the LLM provider | (Required for AI) |
+| `NEXT_PUBLIC_LLM_MODEL` | Model name to use | `gpt-4o-mini` |
+| `LLM_API_KEY` | Server-side API key (alternative to `NEXT_PUBLIC_LLM_API_KEY`) | — |
+| `NEXT_PUBLIC_GEMINI_API_KEY` | Legacy Gemini key (still supported as fallback) | — |
+| `NEXT_PUBLIC_GEMINI_MODEL` | Legacy Gemini model fallback | — |
 | `NEXT_PUBLIC_DEBUG` | Enable debug mode to see all LLM prompts and responses | `false` |
 | `IMPRINT_URL` | External URL for the Imprint link in the footer. If not set, an internal page is used. | Internal Page |
 | `DATA_PRIVACY_RESPONSIBLE_PERSON` | Name of the person responsible for data privacy (shown on /privacy page). | Placeholder |

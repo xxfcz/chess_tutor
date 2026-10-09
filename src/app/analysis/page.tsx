@@ -14,13 +14,13 @@ import { Stockfish, StockfishEvaluation } from "@/lib/stockfish";
 import { detectChessFormat, ChessFormat } from "@/lib/chessFormatDetector";
 import { detectMissedTactics, DetectedTactic, uciToSan, filterMeaningfulTactics } from "@/lib/tacticDetection";
 import { lookupPossibleOpenings, buildMoveSequenceFromSteps, OpeningMetadata } from "@/lib/openings";
-import { getGenAIModel } from "@/lib/gemini";
-import { ChatSession } from "@google/generative-ai";
+import { getGenAIModel, ChatSession } from "@/lib/gemini";
 import ReactMarkdown from "react-markdown";
 import { useDebug } from "@/contexts/DebugContext";
 import { GameImportModal } from "@/components/GameImportModal";
 import { EvaluationBar } from "@/components/EvaluationBar";
 import { OpeningsModal } from "@/components/OpeningsModal";
+import { getStoredApiKey } from "@/lib/apiKeyHelper";
 
 interface MoveStep {
     san: string;
@@ -73,7 +73,7 @@ export default function AnalysisPage() {
     const [playStrength, setPlayStrength] = useState(15);
 
     useEffect(() => {
-        const storedKey = localStorage.getItem("gemini_api_key");
+        const storedKey = getStoredApiKey();
         const storedLang = localStorage.getItem("chess_tutor_language");
         if (storedKey) setApiKey(storedKey);
         if (storedLang) setLanguage(storedLang as SupportedLanguage);

@@ -3,8 +3,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { X, Loader2, Send, BookOpen } from "lucide-react";
 import { OpeningMetadata } from "@/lib/openings";
-import { getGenAIModel } from "@/lib/gemini";
-import { ChatSession } from "@google/generative-ai";
+import { getGenAIModel, ChatSession } from "@/lib/gemini";
+import { getStoredApiKey } from "@/lib/apiKeyHelper";
 import ReactMarkdown from "react-markdown";
 import { SupportedLanguage, translations } from "@/lib/i18n/translations";
 import { Personality } from "@/lib/personalities";
@@ -51,7 +51,7 @@ export function OpeningsModal({
         if (explanations[index]?.content || explanations[index]?.isLoading) return;
 
         const opening = openings[index];
-        const apiKey = typeof window !== "undefined" ? localStorage.getItem("gemini_api_key") : null;
+        const apiKey = getStoredApiKey();
         if (!apiKey) return;
 
         setExplanations(prev => ({

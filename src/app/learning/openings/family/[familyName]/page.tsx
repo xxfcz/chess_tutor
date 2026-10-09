@@ -13,6 +13,7 @@ import { OpeningTrainerErrorBoundary } from '@/components/OpeningTrainer/ErrorBo
 import { getOpeningsByFamily } from '@/lib/openingTrainer/openingLoader';
 import { buildVariationTree, VariationTree } from '@/lib/openingTrainer/gameLogic';
 import { Personality, PERSONALITIES } from '@/lib/personalities';
+import { getStoredApiKey } from '@/lib/apiKeyHelper';
 
 /**
  * Family Training Page
@@ -39,7 +40,7 @@ export default function FamilyTrainingPage() {
     if (storedLang) setLanguage(storedLang as SupportedLanguage);
 
     // Load API key
-    const storedApiKey = localStorage.getItem('gemini_api_key');
+    const storedApiKey = getStoredApiKey();
     if (storedApiKey) setApiKey(storedApiKey);
 
     // Load personality

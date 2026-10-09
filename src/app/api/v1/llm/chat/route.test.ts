@@ -85,7 +85,7 @@ describe("POST /api/v1/llm/chat", () => {
     expect(response.status).toBe(200);
     expect(payload.reply).toBe("Tutor reply");
 
-    expect(getGenAIModel).toHaveBeenCalledWith("test-key", DEFAULT_GEMINI_MODEL);
+    expect(getGenAIModel).toHaveBeenCalledWith("test-key", DEFAULT_GEMINI_MODEL, undefined);
 
     expect(mockStartChat).toHaveBeenCalledTimes(1);
     const startHistory = mockStartChat.mock.calls[0][0].history;
@@ -113,6 +113,6 @@ describe("POST /api/v1/llm/chat", () => {
       })
     );
 
-    expect(getGenAIModel).toHaveBeenCalledWith("key-123", "gemini-custom");
+    expect(getGenAIModel).toHaveBeenCalledWith("key-123", "gemini-custom", undefined);
   });
 });

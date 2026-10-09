@@ -90,9 +90,15 @@ export function buildMoveHistoryItem(args: BuildMoveHistoryItemArgs): {
         cpLoss,
     });
 
+    // chess.js 1.x removed the `ply` field from Move; derive the human move
+    // number from the fullmove counter in the FEN (identical for both colors
+    // within a move pair: white's and black's move N both show fullmove N).
+    const fenFields = fenBeforePlayerMove.split(" ");
+    const moveNumber = parseInt(fenFields[5] ?? "1", 10) || 1;
+
     return {
         historyItem: {
-            moveNumber: Math.ceil(playerMove.ply / 2),
+            moveNumber,
             playerMove: playerMove.san,
             playerColor,
             fenBeforePlayerMove,

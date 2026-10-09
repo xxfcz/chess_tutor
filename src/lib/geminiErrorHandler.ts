@@ -21,19 +21,21 @@ export function parseGeminiError(error: any): GeminiErrorInfo {
   // Check for quota exceeded (429 error)
   const isQuotaError = errorMessage.includes('quota') ||
                        errorMessage.includes('429') ||
-                       errorMessage.includes('exceeded your current quota');
+                       errorMessage.includes('exceeded your current quota') ||
+                       errorMessage.includes('insufficient_quota');
 
   // Check for rate limit errors
   const isRateLimitError = errorMessage.includes('rate limit') ||
-                           errorMessage.includes('429');
+                           errorMessage.includes('429') ||
+                           errorMessage.includes('too many requests');
 
   // Check for model errors: retired / renamed / not available to this key
-  // e.g. "models/gemini-2.5-flash is no longer available to new users"
   const isModelError = errorMessage.includes('404') &&
                        (errorMessage.includes('model') || errorMessage.includes('models/')) ||
                        errorMessage.includes('is no longer available') ||
                        errorMessage.includes('is not found') ||
-                       errorMessage.includes('not supported for generateContent');
+                       errorMessage.includes('does not exist') ||
+                       errorMessage.includes('not supported');
 
   // Extract retry delay if available
   let retryAfterSeconds: number | undefined;
@@ -55,16 +57,14 @@ export function parseGeminiError(error: any): GeminiErrorInfo {
     userMessage = retryAfterSeconds
       ? `You're sending requests too quickly. Please wait ${retryAfterSeconds} seconds before trying again.`
       : 'You\'re sending requests too quickly. Please wait a moment before trying again.';
+  } else if (errorMessage.includes('401') || errorMessage.includes('unauthorized') || errorMessage.includes('invalid') && errorMessage.includes('key')) {
+    userMessage = 'Your API key appears to be invalid. Please check your settings.';
   } else if (isModelError) {
-    // Extract the suggested replacement from Google's message when present
-    const suggested = errorMessage.match(/use models\/([^\s]+)/)?.[1];
-    userMessage = suggested
-      ? `The AI model configured for this app is no longer available to your API key. Google suggests using "${suggested}". Set NEXT_PUBLIC_GEMINI_MODEL=${suggested} and restart the dev server.`
-      : 'The AI model configured for this app is no longer available to your API key. Please update the model name (NEXT_PUBLIC_GEMINI_MODEL) and restart the dev server.';
+    userMessage = 'The AI model configured for this app is no longer available to your API key. Please update the model name in Settings and try again.';
   } else if (errorMessage.includes('API key')) {
     userMessage = 'Your API key appears to be invalid. Please check your settings.';
-  } else if (errorMessage.includes('network') || errorMessage.includes('fetch')) {
-    userMessage = 'Network error. Please check your internet connection and try again.';
+  } else if (errorMessage.includes('network') || errorMessage.includes('fetch') || errorMessage.includes('unable to reach')) {
+    userMessage = 'Network error. Please check the Base URL and your internet connection, then try again.';
   } else {
     userMessage = 'An error occurred while communicating with the AI. Please try again.';
   }
@@ -80,11 +80,16 @@ export function parseGeminiError(error: any): GeminiErrorInfo {
 }
 
 /**
- * Check if an error is a Gemini API error
+ * Check if an error originated from an LLM API call.
  */
 export function isGeminiError(error: any): boolean {
   const message = error?.message || error?.toString() || '';
   return message.includes('GoogleGenerativeAI') ||
          message.includes('generativelanguage.googleapis.com') ||
-         message.includes('Gemini');
+         message.includes('Gemini') ||
+         message.includes('LLM API error') ||
+         message.includes('Network error') ||
+         message.includes('openai') ||
+         message.includes('Unauthorized') ||
+         message.includes('401');
 }

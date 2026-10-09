@@ -10,7 +10,9 @@ import { useHasHydrated } from "@/lib/useHasHydrated";
 
 export default function SettingsPage() {
     const router = useRouter();
-    const [apiKey, setApiKey] = useState(() => typeof window === "undefined" ? "" : localStorage.getItem("gemini_api_key") || "");
+    const [apiKey, setApiKey] = useState(() => typeof window === "undefined" ? "" : localStorage.getItem("llm_api_key") || localStorage.getItem("gemini_api_key") || "");
+    const [baseUrl, setBaseUrl] = useState(() => typeof window === "undefined" ? "" : localStorage.getItem("llm_base_url") || "");
+    const [model, setModel] = useState(() => typeof window === "undefined" ? "" : localStorage.getItem("llm_model") || "");
     const [language, setLanguage] = useState<SupportedLanguage>(() => {
         if (typeof window === "undefined") {
             return "en";
@@ -36,9 +38,23 @@ export default function SettingsPage() {
         setShowConsentError(false);
 
         if (apiKey.trim()) {
-            localStorage.setItem("gemini_api_key", apiKey.trim());
-        } else {
+            localStorage.setItem("llm_api_key", apiKey.trim());
             localStorage.removeItem("gemini_api_key");
+        } else {
+            localStorage.removeItem("llm_api_key");
+            localStorage.removeItem("gemini_api_key");
+        }
+
+        if (baseUrl.trim()) {
+            localStorage.setItem("llm_base_url", baseUrl.trim());
+        } else {
+            localStorage.removeItem("llm_base_url");
+        }
+
+        if (model.trim()) {
+            localStorage.setItem("llm_model", model.trim());
+        } else {
+            localStorage.removeItem("llm_model");
         }
 
         localStorage.setItem("chess_tutor_language", language);
@@ -109,19 +125,53 @@ export default function SettingsPage() {
                                 </div>
                             </div>
 
-                            {/* API Key Input */}
+                            {/* API Provider Configuration */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     {t.start.apiKey}
                                 </label>
+                                <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
+                                    Connect any OpenAI-compatible provider (OpenAI, OpenRouter, Together, a local LLM, a Gemini-to-OpenAI proxy, …).
+                                </p>
                                 <div className="space-y-3">
-                                    <input
-                                        type="password"
-                                        value={apiKey}
-                                        onChange={(e) => setApiKey(e.target.value)}
-                                        placeholder={t.start.apiKeyPlaceholder}
-                                        className="w-full p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-                                    />
+                                    <div>
+                                        <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                                            API Base URL
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={baseUrl}
+                                            onChange={(e) => setBaseUrl(e.target.value)}
+                                            placeholder="https://api.openai.com/v1"
+                                            className="w-full p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                                            API Key
+                                        </label>
+                                        <input
+                                            type="password"
+                                            value={apiKey}
+                                            onChange={(e) => setApiKey(e.target.value)}
+                                            placeholder="sk-... (or your provider's key)"
+                                            className="w-full p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                                            Model
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={model}
+                                            onChange={(e) => setModel(e.target.value)}
+                                            placeholder="gpt-4o-mini"
+                                            className="w-full p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                                        />
+                                    </div>
 
                                     {/* Consent Checkbox */}
                                     <div className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
@@ -144,7 +194,7 @@ export default function SettingsPage() {
                                     )}
 
                                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                                        {t.start.apiKeyRequired} <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">{t.start.getApiKey}</a>
+                                        {t.start.apiKeyRequired}
                                     </p>
                                 </div>
                             </div>

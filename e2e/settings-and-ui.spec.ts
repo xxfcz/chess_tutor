@@ -4,7 +4,7 @@ test.describe('Settings and UI Features', () => {
   test.beforeEach(async ({ page }) => {
     // Set a mock API key in localStorage BEFORE any page loads
     await page.addInitScript(() => {
-      localStorage.setItem('gemini_api_key', 'mock-api-key-for-testing');
+      localStorage.setItem('llm_api_key', 'mock-api-key-for-testing');
     });
   });
 
@@ -51,19 +51,19 @@ test.describe('Settings and UI Features', () => {
     await page.waitForLoadState('networkidle');
     
     // Should see API key section
-    await expect(page.locator('text=Google Gemini API Key')).toBeVisible();
-    
+    await expect(page.locator('text=LLM API Key')).toBeVisible();
+
     // Should see API key input
-    const apiKeyInput = page.locator('input[type="password"]').or(page.locator('input[placeholder*="API"]'));
+    const apiKeyInput = page.locator('input[type="password"]');
     await expect(apiKeyInput.first()).toBeVisible();
   });
 
   test('should save API key', async ({ page }) => {
     await page.goto('/settings');
     await page.waitForLoadState('networkidle');
-    
+
     // Enter API key
-    const apiKeyInput = page.locator('input[type="password"]').or(page.locator('input[placeholder*="API"]'));
+    const apiKeyInput = page.locator('input[type="password"]');
     await apiKeyInput.first().fill('test-api-key-12345');
     
     // Should see save button
@@ -76,7 +76,7 @@ test.describe('Settings and UI Features', () => {
     }
     
     // Verify API key is saved in localStorage
-    const savedKey = await page.evaluate(() => localStorage.getItem('gemini_api_key'));
+    const savedKey = await page.evaluate(() => localStorage.getItem('llm_api_key'));
     expect(savedKey).toBe('test-api-key-12345');
   });
 

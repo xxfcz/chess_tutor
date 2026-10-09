@@ -12,6 +12,7 @@ import OpeningTrainer from '@/components/OpeningTrainer/OpeningTrainer';
 import { OpeningTrainerErrorBoundary } from '@/components/OpeningTrainer/ErrorBoundary';
 import { getOpeningByEco } from '@/lib/openingTrainer/openingLoader';
 import { Personality, PERSONALITIES } from '@/lib/personalities';
+import { getStoredApiKey } from '@/lib/apiKeyHelper';
 
 export default function OpeningTrainingPage() {
   const params = useParams();
@@ -30,7 +31,7 @@ export default function OpeningTrainingPage() {
     if (storedLang) setLanguage(storedLang as SupportedLanguage);
 
     // Load API key
-    const storedApiKey = localStorage.getItem('gemini_api_key');
+    const storedApiKey = getStoredApiKey();
     if (storedApiKey) setApiKey(storedApiKey);
 
     // Load personality

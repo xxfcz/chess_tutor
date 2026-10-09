@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
-import { ChatSession } from "@google/generative-ai";
+import { ChatSession } from "@/lib/gemini";
 import { Chess, Move } from "chess.js";
 
 import { useDebug } from "@/contexts/DebugContext";

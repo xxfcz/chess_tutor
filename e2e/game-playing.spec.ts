@@ -4,7 +4,7 @@ test.describe('Game Playing Feature', () => {
   test.beforeEach(async ({ page }) => {
     // Set a mock API key in localStorage BEFORE any page loads
     await page.addInitScript(() => {
-      localStorage.setItem('gemini_api_key', 'mock-api-key-for-testing');
+      localStorage.setItem('llm_api_key', 'mock-api-key-for-testing');
     });
 
     // Mock the LLM API to avoid needing a real API key

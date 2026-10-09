@@ -11,7 +11,7 @@ test.describe('Opening Training', () => {
   test.beforeEach(async ({ page }) => {
     // Set a mock API key in localStorage BEFORE any page loads
     await page.addInitScript(() => {
-      localStorage.setItem('gemini_api_key', 'mock-api-key-for-testing');
+      localStorage.setItem('llm_api_key', 'mock-api-key-for-testing');
     });
 
     // Navigate to opening selection page
@@ -253,7 +253,7 @@ test.describe('Opening Training Performance', () => {
   test.beforeEach(async ({ page }) => {
     // Set a mock API key in localStorage BEFORE any page loads
     await page.addInitScript(() => {
-      localStorage.setItem('gemini_api_key', 'mock-api-key-for-testing');
+      localStorage.setItem('llm_api_key', 'mock-api-key-for-testing');
     });
   });
 
@@ -291,7 +291,7 @@ test.describe('Opening Training Accessibility', () => {
   test.beforeEach(async ({ page }) => {
     // Set a mock API key in localStorage BEFORE any page loads
     await page.addInitScript(() => {
-      localStorage.setItem('gemini_api_key', 'mock-api-key-for-testing');
+      localStorage.setItem('llm_api_key', 'mock-api-key-for-testing');
     });
   });
 
