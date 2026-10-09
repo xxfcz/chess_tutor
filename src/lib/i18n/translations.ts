@@ -179,6 +179,16 @@ export interface Translations {
             getKey: string;
             consentLabel: string;
             consentRequired: string;
+            testConnection: string;
+            testing: string;
+            testMissing: string;
+            testOk: string;
+            testAuth: string;
+            testModel: string;
+            testQuota: string;
+            testCors: string;
+            testNetwork: string;
+            testError: string;
         };
         actions: {
             next: string;
@@ -405,6 +415,16 @@ const en: Translations = {
             getKey: 'Get an API key',
             consentLabel: 'I understand and agree that my API key will be stored in my browser\'s local storage',
             consentRequired: 'You must agree to store the API key in local storage to continue',
+            testConnection: 'Test connection',
+            testing: 'Testing…',
+            testMissing: 'Enter an API key first.',
+            testOk: 'Connection successful.',
+            testAuth: 'The provider rejected this API key.',
+            testModel: 'Model or endpoint not found (404).',
+            testQuota: 'Rate limited or out of quota.',
+            testCors: 'The URL and API key are valid, but this provider blocks direct requests from the browser (CORS).',
+            testNetwork: 'Could not reach the provider. Check the Base URL and your network.',
+            testError: 'The provider returned an error.',
         },
         actions: {
             next: 'Next',
@@ -629,6 +649,16 @@ const de: Translations = {
             getKey: 'API-Schlüssel holen',
             consentLabel: 'Ich verstehe und stimme zu, dass mein API-Schlüssel im lokalen Speicher meines Browsers gespeichert wird',
             consentRequired: 'Du musst der Speicherung des API-Schlüssels im lokalen Speicher zustimmen, um fortzufahren',
+            testConnection: 'Verbindung testen',
+            testing: 'Teste…',
+            testMissing: 'Bitte zuerst einen API-Schlüssel eingeben.',
+            testOk: 'Verbindung erfolgreich.',
+            testAuth: 'Der Anbieter hat diesen API-Schlüssel abgelehnt.',
+            testModel: 'Modell oder Endpunkt nicht gefunden (404).',
+            testQuota: 'Ratenlimit erreicht oder Kontingent erschöpft.',
+            testCors: 'URL und API-Schlüssel sind gültig, aber dieser Anbieter blockt direkte Anfragen aus dem Browser (CORS).',
+            testNetwork: 'Anbieter nicht erreichbar. Prüfe die Base-URL und deine Verbindung.',
+            testError: 'Der Anbieter hat einen Fehler zurückgegeben.',
         },
         actions: {
             next: 'Weiter',
@@ -853,6 +883,16 @@ const fr: Translations = {
             getKey: 'Obtenir une clé API',
             consentLabel: 'Je comprends et j\'accepte que ma clé API soit stockée dans le stockage local de mon navigateur',
             consentRequired: 'Vous devez accepter le stockage de la clé API dans le stockage local pour continuer',
+            testConnection: 'Tester la connexion',
+            testing: 'Test en cours…',
+            testMissing: 'Saisissez d’abord une clé API.',
+            testOk: 'Connexion réussie.',
+            testAuth: 'Le fournisseur a rejeté cette clé API.',
+            testModel: 'Modèle ou endpoint introuvable (404).',
+            testQuota: 'Limite de débit atteinte ou quota épuisé.',
+            testCors: 'L’URL et la clé API sont valides, mais ce fournisseur bloque les requêtes directes depuis le navigateur (CORS).',
+            testNetwork: 'Fournisseur injoignable. Vérifiez l’URL de base et votre réseau.',
+            testError: 'Le fournisseur a renvoyé une erreur.',
         },
         actions: {
             next: 'Suivant',
@@ -1077,6 +1117,16 @@ const it: Translations = {
             getKey: 'Ottieni una chiave API',
             consentLabel: 'Comprendo e accetto che la mia chiave API verrà memorizzata nel local storage del mio browser',
             consentRequired: 'Devi accettare la memorizzazione della chiave API nel local storage per continuare',
+            testConnection: 'Testa la connessione',
+            testing: 'Test in corso…',
+            testMissing: 'Inserisci prima una chiave API.',
+            testOk: 'Connessione riuscita.',
+            testAuth: 'Il provider ha rifiutato questa chiave API.',
+            testModel: 'Modello o endpoint non trovato (404).',
+            testQuota: 'Limite di richieste raggiunto o quota esaurita.',
+            testCors: 'URL e chiave API sono validi, ma il provider blocca le richieste dirette dal browser (CORS).',
+            testNetwork: 'Provider non raggiungibile. Controlla l’URL di base e la rete.',
+            testError: 'Il provider ha restituito un errore.',
         },
         actions: {
             next: 'Avanti',
@@ -1301,6 +1351,16 @@ const pl: Translations = {
             getKey: 'Zdobądź klucz API',
             consentLabel: 'Rozumiem i zgadzam się, że mój klucz API będzie przechowywany w pamięci lokalnej mojej przeglądarki',
             consentRequired: 'Musisz wyrazić zgodę na przechowywanie klucza API w pamięci lokalnej, aby kontynuować',
+            testConnection: 'Testuj połączenie',
+            testing: 'Testowanie…',
+            testMissing: 'Najpierw podaj klucz API.',
+            testOk: 'Połączenie udane.',
+            testAuth: 'Dostawca odrzucił ten klucz API.',
+            testModel: 'Nie znaleziono modelu ani endpointu (404).',
+            testQuota: 'Przekroczono limit zapytań lub wyczerpano limit.',
+            testCors: 'URL i klucz API są prawidłowe, ale dostawca blokuje bezpośrednie żądania z przeglądarki (CORS).',
+            testNetwork: 'Nie można połączyć się z dostawcą. Sprawdź Base URL i sieć.',
+            testError: 'Dostawca zwrócił błąd.',
         },
         actions: {
             next: 'Dalej',
@@ -1525,6 +1585,16 @@ const zhCN: Translations = {
             getKey: '获取 API 密钥',
             consentLabel: '我理解并同意将我的 API 密钥存储在浏览器的本地存储中',
             consentRequired: '你必须同意将 API 密钥存入本地存储才能继续',
+            testConnection: '测试连接',
+            testing: '正在测试…',
+            testMissing: '请先填写 API Key。',
+            testOk: '连接成功。',
+            testAuth: '服务商拒绝了该 API Key。',
+            testModel: '未找到模型或接口地址（404）。',
+            testQuota: '触发限流或额度已用尽。',
+            testCors: 'URL 与 API Key 有效，但该服务商禁止浏览器直接请求（CORS）。',
+            testNetwork: '无法连接服务商，请检查 Base URL 与网络。',
+            testError: '服务商返回错误。',
         },
         actions: {
             next: '下一步',
@@ -1749,6 +1819,16 @@ const zhTW: Translations = {
             getKey: '取得 API 金鑰',
             consentLabel: '我理解並同意將我的 API 金鑰儲存在瀏覽器的本地儲存中',
             consentRequired: '你必須同意將 API 金鑰存入本地儲存才能繼續',
+            testConnection: '測試連線',
+            testing: '正在測試…',
+            testMissing: '請先填寫 API Key。',
+            testOk: '連線成功。',
+            testAuth: '服務商拒絕了這個 API Key。',
+            testModel: '找不到模型或介面位址（404）。',
+            testQuota: '已觸發限流或額度用盡。',
+            testCors: 'URL 與 API Key 有效，但該服務商禁止瀏覽器直接請求（CORS）。',
+            testNetwork: '無法連線服務商，請檢查 Base URL 與網路。',
+            testError: '服務商回傳錯誤。',
         },
         actions: {
             next: '下一步',

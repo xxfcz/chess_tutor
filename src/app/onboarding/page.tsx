@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, CheckCircle2, KeyRound, Languages, Sparkles } from "lucide-react";
 import Header from "@/components/Header";
+import { LLMConnectionTest } from "@/components/LLMConnectionTest";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 import { SupportedLanguage, translations, languageNames } from "@/lib/i18n/translations";
 
@@ -241,6 +242,13 @@ export default function OnboardingPage() {
                                         onChange={(e) => setModel(e.target.value)}
                                         placeholder="gpt-4o-mini"
                                         className="w-full p-3 rounded-lg border dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                    />
+
+                                    <LLMConnectionTest
+                                        baseUrl={baseUrl}
+                                        apiKey={apiKey}
+                                        model={model}
+                                        language={language}
                                     />
 
                                     {/* Consent Checkbox */}

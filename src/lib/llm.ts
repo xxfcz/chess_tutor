@@ -112,7 +112,7 @@ export function resolveLLMConfig(opts?: {
  * Accepts either a bare base (`https://api.openai.com/v1`) or a full
  * `.../chat/completions` URL (idempotent).
  */
-function buildEndpoint(baseUrl: string): string {
+export function buildEndpoint(baseUrl: string): string {
     let url = (baseUrl || "").replace(/\/+$/, "");
     if (!url) url = DEFAULT_LLM_BASE_URL;
     if (/\/chat\/completions$/i.test(url)) return url;

@@ -7,6 +7,7 @@ import { useTranslation } from "@/lib/i18n/useTranslation";
 import { SupportedLanguage, translations, languageNames } from "@/lib/i18n/translations";
 import { ArrowLeft, Save, Trash2 } from "lucide-react";
 import { useHasHydrated } from "@/lib/useHasHydrated";
+import { LLMConnectionTest } from "@/components/LLMConnectionTest";
 
 export default function SettingsPage() {
     const router = useRouter();
@@ -172,6 +173,13 @@ export default function SettingsPage() {
                                             className="w-full p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                                         />
                                     </div>
+
+                                    <LLMConnectionTest
+                                        baseUrl={baseUrl}
+                                        apiKey={apiKey}
+                                        model={model}
+                                        language={language}
+                                    />
 
                                     {/* Consent Checkbox */}
                                     <div className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
