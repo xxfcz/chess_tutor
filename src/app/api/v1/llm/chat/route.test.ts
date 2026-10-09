@@ -2,10 +2,11 @@
  * @jest-environment node
  */
 import { POST } from "./route";
-import { getGenAIModel } from "@/lib/gemini";
+import { getGenAIModel, DEFAULT_GEMINI_MODEL } from "@/lib/gemini";
 import { PERSONALITIES } from "@/lib/personalities";
 
 jest.mock("@/lib/gemini", () => ({
+  ...jest.requireActual("@/lib/gemini"),
   getGenAIModel: jest.fn(),
 }));
 
@@ -84,7 +85,7 @@ describe("POST /api/v1/llm/chat", () => {
     expect(response.status).toBe(200);
     expect(payload.reply).toBe("Tutor reply");
 
-    expect(getGenAIModel).toHaveBeenCalledWith("test-key", "gemini-2.5-flash");
+    expect(getGenAIModel).toHaveBeenCalledWith("test-key", DEFAULT_GEMINI_MODEL);
 
     expect(mockStartChat).toHaveBeenCalledTimes(1);
     const startHistory = mockStartChat.mock.calls[0][0].history;

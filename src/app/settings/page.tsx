@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import { useTranslation } from "@/lib/i18n/useTranslation";
-import { SupportedLanguage } from "@/lib/i18n/translations";
+import { SupportedLanguage, translations, languageNames } from "@/lib/i18n/translations";
 import { ArrowLeft, Save, Trash2 } from "lucide-react";
 import { useHasHydrated } from "@/lib/useHasHydrated";
 
@@ -94,7 +94,7 @@ export default function SettingsPage() {
                                     {t.start.language}
                                 </label>
                                 <div className="flex gap-3">
-                                    {(['en', 'de', 'fr', 'it', 'pl'] as SupportedLanguage[]).map((lang) => (
+                                    {(Object.keys(translations) as SupportedLanguage[]).map((lang) => (
                                         <button
                                             key={lang}
                                             onClick={() => setLanguage(lang)}
@@ -103,7 +103,7 @@ export default function SettingsPage() {
                                                     : 'bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200'
                                                 }`}
                                         >
-                                            {lang.toUpperCase()}
+                                            {languageNames[lang] ?? lang.toUpperCase()}
                                         </button>
                                     ))}
                                 </div>

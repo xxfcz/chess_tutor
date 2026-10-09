@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, CheckCircle2, KeyRound, Languages, Sparkles } from "lucide-react";
 import Header from "@/components/Header";
 import { useTranslation } from "@/lib/i18n/useTranslation";
-import { SupportedLanguage } from "@/lib/i18n/translations";
+import { SupportedLanguage, translations, languageNames } from "@/lib/i18n/translations";
 
 const STEPS = 4;
 
@@ -139,7 +139,7 @@ export default function OnboardingPage() {
                             <div className="space-y-6">
                                 <p className="text-gray-700 dark:text-gray-300">{t.onboarding.language.description}</p>
                                 <div className="flex flex-wrap gap-3">
-                                    {["en", "de", "fr", "it", "pl"].map((lang) => (
+                                    {(Object.keys(translations) as SupportedLanguage[]).map((lang) => (
                                         <button
                                             key={lang}
                                             onClick={() => setLanguage(lang as SupportedLanguage)}
@@ -150,7 +150,7 @@ export default function OnboardingPage() {
                                         >
                                             <span className="inline-flex items-center gap-2">
                                                 <Languages size={16} />
-                                                {lang.toUpperCase()}
+                                                {languageNames[lang] ?? lang.toUpperCase()}
                                             </span>
                                         </button>
                                     ))}

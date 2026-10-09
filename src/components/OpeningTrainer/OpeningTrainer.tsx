@@ -23,6 +23,7 @@ import DeviationDialog from './DeviationDialog';
 import { Tutor } from '@/components/Tutor';
 import { Personality } from '@/lib/personalities';
 import { SupportedLanguage } from '@/lib/i18n/translations';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { useRouter } from 'next/navigation';
 
 interface OpeningTrainerProps {
@@ -43,6 +44,7 @@ export default function OpeningTrainer({
   variationTree,
   allVariations,
 }: OpeningTrainerProps) {
+  const t = useTranslation(language);
   const router = useRouter();
   const isFamilyMode = !!variationTree && !!allVariations;
 
@@ -378,7 +380,7 @@ export default function OpeningTrainer({
     return (
       <div className="space-y-6">
         <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-          <h3 className="font-semibold text-red-900 mb-2">Error</h3>
+          <h3 className="font-semibold text-red-900 mb-2">{t.common.error}</h3>
           <p className="text-red-700">{error}</p>
           <button
             onClick={() => initSession()}
@@ -544,7 +546,7 @@ export default function OpeningTrainer({
           >
             {moveCount === 0 ? (
               <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-4">
-                No moves yet. Make your first move!
+                {t.learning.openingTrainer.noMovesHint}
               </p>
             ) : (
               session.moveHistory.map((move, index) => (

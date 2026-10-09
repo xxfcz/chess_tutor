@@ -6,6 +6,7 @@ import { OpeningMetadata, lookupOpening } from "@/lib/openings";
 import { getGenAIModel } from "@/lib/gemini";
 import { Loader2, X, Brain, Trophy, AlertTriangle } from "lucide-react";
 import { SupportedLanguage } from "@/lib/i18n/translations";
+import { useTranslation } from "@/lib/i18n/useTranslation";
 
 interface GameAnalysisModalProps {
     fen: string;
@@ -16,6 +17,7 @@ interface GameAnalysisModalProps {
 }
 
 export function GameAnalysisModal({ fen, stockfish, apiKey, language, onClose }: GameAnalysisModalProps) {
+    const t = useTranslation(language);
     const [evaluation, setEvaluation] = useState<StockfishEvaluation | null>(null);
     const [opening, setOpening] = useState<OpeningMetadata | null>(null);
     const [summary, setSummary] = useState<string>("");
@@ -38,7 +40,7 @@ export function GameAnalysisModal({ fen, stockfish, apiKey, language, onClose }:
 
                 // 3. LLM Summary
                 if (apiKey && evalResult) {
-                    const model = getGenAIModel(apiKey, "gemini-2.5-flash");
+                    const model = getGenAIModel(apiKey);
                     const evalInPawns = (evalResult.score / 100).toFixed(2);
                     const prompt = `
 You are a Chess Grandmaster Analyst.
@@ -106,7 +108,7 @@ Plain text paragraph.
                             {/* Evaluation Score */}
                             <div className="flex items-center justify-between p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
                                 <div>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">Evaluation</p>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">{t.analysis.evaluation}</p>
                                     <p className={`text-2xl font-bold ${(evaluation?.score || 0) > 0 ? "text-green-600" : (evaluation?.score || 0) < 0 ? "text-red-600" : "text-gray-600"
                                         }`}>
                                         {evaluation?.mate

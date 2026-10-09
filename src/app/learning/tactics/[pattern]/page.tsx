@@ -536,11 +536,11 @@ export default function TacticalPracticePage() {
                     {/* Statistics Display */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                         <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
-                            <div className="text-sm text-gray-500 dark:text-gray-400">Correct</div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">{t.learning.practice.correct}</div>
                             <div className="text-2xl font-bold text-green-600 dark:text-green-400">{stats.totalCorrect}</div>
                         </div>
                         <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
-                            <div className="text-sm text-gray-500 dark:text-gray-400">Incorrect</div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">{t.learning.practice.incorrect}</div>
                             <div className="text-2xl font-bold text-red-600 dark:text-red-400">{stats.totalIncorrect}</div>
                         </div>
                         <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">

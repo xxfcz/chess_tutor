@@ -104,7 +104,7 @@ export default function AnalysisPage() {
     // Initialize chat session for conversational analysis
     useEffect(() => {
         if (apiKey) {
-            const model = getGenAIModel(apiKey, "gemini-2.5-flash");
+            const model = getGenAIModel(apiKey);
             const session = model.startChat({
                 history: [
                     {
@@ -550,8 +550,8 @@ INSTRUCTIONS:
                                         onChange={(e) => setOrientation(e.target.value as "white" | "black")}
                                         className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 text-sm"
                                     >
-                                        <option value="white">White</option>
-                                        <option value="black">Black</option>
+                                        <option value="white">{t.game.white}</option>
+                                        <option value="black">{t.game.black}</option>
                                     </select>
                                 </div>
                             </div>

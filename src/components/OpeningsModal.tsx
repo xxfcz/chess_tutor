@@ -80,7 +80,7 @@ Please provide a brief but insightful explanation about this opening. Cover:
 4. One interesting historical fact or famous game featuring this opening (keep it brief)
 
 Be conversational and engaging, matching your personality. Keep your response concise (about 150-200 words).
-Respond in ${language === 'de' ? 'German' : language === 'fr' ? 'French' : language === 'it' ? 'Italian' : 'English'}.`;
+Respond in ${language === 'de' ? 'German' : language === 'fr' ? 'French' : language === 'it' ? 'Italian' : language === 'zh-CN' ? 'Simplified Chinese' : language === 'zh-TW' ? 'Traditional Chinese' : 'English'}.`;
 
             const result = await chat.sendMessage(prompt);
             const responseText = result.response.text();

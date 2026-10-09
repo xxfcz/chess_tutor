@@ -6,6 +6,7 @@ import {
   OPENING_TUTOR_MAX_TOKENS,
   generateFallbackExplanation,
 } from '@/lib/server/openingTutorPrompt';
+import { DEFAULT_GEMINI_MODEL } from '@/lib/gemini';
 
 export const runtime = 'nodejs';
 export const maxDuration = 10; // 10 second timeout
@@ -53,7 +54,7 @@ export async function POST(request: NextRequest) {
     // Initialize Gemini API
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
-      model: 'gemini-1.5-flash',
+      model: DEFAULT_GEMINI_MODEL,
       generationConfig: {
         temperature: OPENING_TUTOR_TEMPERATURE,
         maxOutputTokens: OPENING_TUTOR_MAX_TOKENS,

@@ -5,6 +5,8 @@
 export interface GeminiErrorInfo {
   isQuotaError: boolean;
   isRateLimitError: boolean;
+  /** The requested model was rejected (404 / retired / unsupported). */
+  isModelError: boolean;
   userMessage: string;
   technicalMessage: string;
   retryAfterSeconds?: number;
@@ -24,6 +26,14 @@ export function parseGeminiError(error: any): GeminiErrorInfo {
   // Check for rate limit errors
   const isRateLimitError = errorMessage.includes('rate limit') ||
                            errorMessage.includes('429');
+
+  // Check for model errors: retired / renamed / not available to this key
+  // e.g. "models/gemini-2.5-flash is no longer available to new users"
+  const isModelError = errorMessage.includes('404') &&
+                       (errorMessage.includes('model') || errorMessage.includes('models/')) ||
+                       errorMessage.includes('is no longer available') ||
+                       errorMessage.includes('is not found') ||
+                       errorMessage.includes('not supported for generateContent');
 
   // Extract retry delay if available
   let retryAfterSeconds: number | undefined;
@@ -45,6 +55,12 @@ export function parseGeminiError(error: any): GeminiErrorInfo {
     userMessage = retryAfterSeconds
       ? `You're sending requests too quickly. Please wait ${retryAfterSeconds} seconds before trying again.`
       : 'You\'re sending requests too quickly. Please wait a moment before trying again.';
+  } else if (isModelError) {
+    // Extract the suggested replacement from Google's message when present
+    const suggested = errorMessage.match(/use models\/([^\s]+)/)?.[1];
+    userMessage = suggested
+      ? `The AI model configured for this app is no longer available to your API key. Google suggests using "${suggested}". Set NEXT_PUBLIC_GEMINI_MODEL=${suggested} and restart the dev server.`
+      : 'The AI model configured for this app is no longer available to your API key. Please update the model name (NEXT_PUBLIC_GEMINI_MODEL) and restart the dev server.';
   } else if (errorMessage.includes('API key')) {
     userMessage = 'Your API key appears to be invalid. Please check your settings.';
   } else if (errorMessage.includes('network') || errorMessage.includes('fetch')) {
@@ -56,6 +72,7 @@ export function parseGeminiError(error: any): GeminiErrorInfo {
   return {
     isQuotaError,
     isRateLimitError,
+    isModelError,
     userMessage,
     technicalMessage: errorMessage,
     retryAfterSeconds,
